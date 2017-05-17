@@ -64,7 +64,7 @@ describe('test/nohm.test.js', () => {
 
     mm.app({
       baseDir: 'apps/nohm-config-redis-return-null',
-    }).on('error', function(err) {
+    }).on('error', function() {
       done();
     });
 
