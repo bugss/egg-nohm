@@ -1,0 +1,66 @@
+{
+  "name": "egg-nohm",
+  "version": "1.0.0",
+  "description": "",
+  "eggPlugin": {
+    "name": "nohm",
+    "dep": [
+      "redis"
+    ]
+  },
+  "keywords": [
+    "egg",
+    "eggPlugin",
+    "egg-plugin",
+    "egg-nohm",
+    "redis-orm"
+  ],
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "egg-redis": "^1.0.1",
+    "nohm": "^0.9.8"
+  },
+  "devDependencies": {
+    "autod": "^2.8.0",
+    "egg": "^1.2.1",
+    "egg-bin": "^3.3.2",
+    "egg-ci": "^1.6.0",
+    "egg-mock": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-egg": "^4.1.0",
+    "supertest": "^3.0.0",
+    "webstorm-disable-index": "^1.1.2"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint -- --fix && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod"
+  },
+  "files": [
+    "index.js",
+    "app.js",
+    "agent.js",
+    "config",
+    "app",
+    "lib"
+  ],
+  "ci": {
+    "version": "6, 7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bugss/egg-nohm"
+  },
+  "bugs": {
+    "url": "https://github.com/bugss/egg-nohm/issues"
+  },
+  "homepage": "https://github.com/bugss/egg-nohm#readme",
+  "author": "huangxuan2046",
+  "license": "MIT"
+}
