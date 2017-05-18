@@ -149,6 +149,29 @@ exports.nohm = {
 };
 ```
 
+## save  id分配的问题
+
+如果你期望下面的代码
+```js
+var model=new SomeNohmModel()  
+model.id='abcd'
+model.save()
+```
+不管这里的id存在还是不存在,都以这个id保存到redis中.
+如果存在id='abcd'的,就更新.
+如果不存在新插入对象的id还是等于'abcd'.请加下面的配置.
+
+```js
+idGenerator (cb) {
+      cb(this.id)
+    }
+```
+
+因为nohm默认的行为是
+-  如果id不填,自动生成一个不重复的
+-  如果id有值,会进一步的到数据库中验证这个值存在不,不存在他还是会自动生成一个新值代替你填入的id的
+
+### 配置项目请看
 see [config/config.default.js](config/config.default.js) for more detail.
 
 ## Example
