@@ -25,8 +25,8 @@ Description here.
 -->
 ## 为什么有这个插件
 
-- 让nohm支持ioredis,egg官方提供的是ioredis,更容易集成.
-- 让nohm的api promise化
+- 让 nohm 支持ioredis,egg官方提供的是ioredis,更容易集成.
+- 让 nohm 的api promise化
 
 ## Install
 
@@ -128,9 +128,18 @@ exports.nohm = {
 };
 ```
 
+egg-redis 插件依赖不是必须的,如果你使用node-redis,可以用下面的方式配置
+```js
+const redis = require('redis')
+const client = redis.createClient()
+exports.nohm = {
+  redis: client
+}
+```
+
 ## promise
 
-nohm中的方法以$结尾的都promisify了.
+nohm中的方法$结尾的都promisify了.
 如原方法save, 会另外增加一个save$返回promise
 
 ## Configuration
@@ -170,6 +179,12 @@ idGenerator (cb) {
 因为nohm默认的行为是
 -  如果id不填,自动生成一个不重复的
 -  如果id有值,会进一步的到数据库中验证这个值存在不,不存在他还是会自动生成一个新值代替你填入的id的
+
+## nohm load$方法报错问题
+nohm通过id找不到数据会报错,自行处理一下
+```js
+let user = yield ConnectUser.load$(openId).catch((err) => null)
+```
 
 ### 配置项目请看
 see [config/config.default.js](config/config.default.js) for more detail.
