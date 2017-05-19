@@ -1,6 +1,5 @@
 'use strict';
 
-
 const mm = require('egg-mock');
 const assert = require('assert');
 
@@ -18,10 +17,12 @@ describe('test/nohm.test.js', () => {
 
   it('should nohm add to the app', () => {
     assert(app.nohm != null);
+    // second get nohm
+    assert(app.nohm != null);
     assert(app.nohmModel != null);
     assert(app.nohmModel.PlayingSong != null);
     assert(app.nohmModel.ObjModel != null);
-
+    assert(app.nohmModel.IgnoreModel == null);
   });
 
   it('should promise work', () => {
@@ -61,13 +62,36 @@ describe('test/nohm.test.js', () => {
   });
 
   it('should throw error when config redis function return  null', function(done) {
-
-    mm.app({
+    const app = mm.app({
       baseDir: 'apps/nohm-config-redis-return-null',
-    }).on('error', function() {
+    });
+    app.on('error', function(err) {
+      assert(err.message === 'redis client must not be null please confirm you config the redis plugin');
+      app.close();
       done();
     });
 
+  });
+
+  it('should throw error when no redis config ', function(done) {
+    const app = mm.app({
+      baseDir: 'apps/nohm-no-redis-client',
+    });
+    app.on('error', e => {
+      assert(e.message === 'redis client must not be null please confirm you config the redis plugin');
+      app.close();
+      done();
+    });
+  });
+
+  it('should be ok when use node-redis client', function* () {
+    const app = mm.app({
+      baseDir: 'apps/nohm-test-node-redis',
+    });
+    yield app.ready();
+    assert(app.nohm != null);
+    assert(app.nohmModel != null);
+    yield app.close();
   });
 
 });

@@ -4,7 +4,7 @@
   "description": "",
   "eggPlugin": {
     "name": "nohm",
-    "dep": [
+    "optionalDependencies": [
       "redis"
     ]
   },
@@ -28,6 +28,7 @@
     "egg-mock": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-egg": "^4.1.0",
+    "redis": "^2.7.1",
     "supertest": "^3.0.0",
     "webstorm-disable-index": "^1.1.2"
   },
@@ -37,6 +38,7 @@
   "scripts": {
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
+    "debug": "egg-bin test  $NODE_DEBUG_OPTION",
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",

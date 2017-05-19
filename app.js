@@ -14,15 +14,20 @@ module.exports = app => {
     } else {
       useRedis = redis;
     }
-    if (!useRedis) {
-      throw new Error('redis client must not be null');
-    }
   } else {
     useRedis = app.redis;
+  }
+  if (!useRedis || typeof useRedis.on !== 'function') {
+    throw new Error('redis client must not be null please confirm you config the redis plugin');
   }
 
   // waiting until the app is ready .
   app.beforeStart(() => new Promise(resolve => {
+    if (useRedis.connected === true) {
+      nohm.setClient(useRedis);
+      resolve();
+      return;
+    }
     useRedis.on('connect', () => {
       // hack  ioredis check this field but ioredis not set
       useRedis.connected = true;
@@ -39,7 +44,7 @@ module.exports = app => {
   const directory = path.join(app.config.baseDir, config.modelPath);
   app.loader.loadToApp(directory, name, {
     call: false,
-    initializer(model) {
+    initializer(model, opt) {
       let returnModel;
       if (typeof model === 'function') {
         if (model.prototype instanceof nohm) {
@@ -47,8 +52,10 @@ module.exports = app => {
         } else {
           returnModel = model(app);
         }
-      } else {
-        throw new Error('model must be a constructor function, make sure you set module.exports');
+      }
+      if (!returnModel) {
+        app.coreLogger.info(`[egg-nohm] ignore null file:${opt.path}`);
+        return null;
       }
       // model static method promise
       Promise.promisifyAll(returnModel, {
